@@ -1,0 +1,83 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="LayoutItem" parent="layout1">
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="StandardText" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/grey_700</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+    <style name="Button" parent="android:Widget.Button">
+        <item name="android:layout_marginTop">@dimen/margin_standard</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+    <style name="Klaim" parent="android:Widget.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_default</item>
+        <item name="android:background">@color/yellow_800</item>
+    </style>
+    <style name="EditText" parent="android:Widget.EditText">
+        <item name="android:textColor">@color/grey_700</item>
+        <item name="android:textColorHint">@color/grey_500</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:drawablePadding">@dimen/padding_default</item>
+        <!--<item name="android:background">@null</item>-->
+    </style>
+
+    <style name="IconItemVector" parent="android:Widget.TextView">
+        <item name="android:tint">@color/grey_500</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="layout1">
+        <item name="android:paddingLeft">@dimen/margin_standard</item>
+        <item name="android:paddingRight">@dimen/margin_standard</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="layout2">
+        <item name="android:paddingLeft">@dimen/margin_medium</item>
+        <item name="android:paddingRight">@dimen/margin_medium</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="TextInItem" parent="StandardText">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/grey_900</item>
+    </style>
+    <style name="TextInSubtitle" parent="StandardText">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+    <style name="TextInTitle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/grey_900</item>
+        <!--<item name="android:textStyle">bold</item>-->
+        <item name="android:textSize">@dimen/text_title</item>
+
+    </style>
+    <style name="TextInTitle2" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/grey_900</item>
+        <item name="android:textStyle">bold</item>
+        <!--<item name="android:textStyle">bold</item>-->
+        <item name="android:textSize">@dimen/text_default</item>
+
+    </style>
+
+</resources>
