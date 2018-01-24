@@ -198,8 +198,6 @@ public class HistoriActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void dispatchTakePictureIntent() throws IOException {
-//        Uri uri = Uri.parse("file://"+Environment.getExternalStorageDirectory()+"/"+ Konstanta.folder_main);
-//        Log.d("asd", "dispatchTakePictureIntent: "+Environment.getExternalStorageDirectory()+"/"+ Konstanta.folder_main);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;

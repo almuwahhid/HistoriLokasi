@@ -146,11 +146,34 @@ public class HistoriDB {
         }
         return historis;
     }
-    public ArrayList getHistori(String key){
+    public ArrayList getHistoriEvent(String key){
         historis = new ArrayList<>();
         try {
             database = db.getWritableDatabase();
             String query = "SELECT * FROM histori WHERE event LIKE '%"+key+"%' ORDER BY tanggal AND jam ASC";
+            csr = database.rawQuery(query, null);
+            while (csr.moveToNext()){
+                Histori histori = new Histori();
+                histori.setId_histori(csr.getInt(csr.getColumnIndex("id_histori")));
+                histori.setNama_tempat(csr.getString(csr.getColumnIndex("nama_tempat")));
+                histori.setEvent(csr.getString(csr.getColumnIndex("event")));
+                histori.setDesk_singkat(csr.getString(csr.getColumnIndex("desk_singkat")));
+                histori.setTanggal(csr.getString(csr.getColumnIndex("tanggal")));
+                histori.setJam(csr.getString(csr.getColumnIndex("jam")));
+                histori.setLatitude(csr.getString(csr.getColumnIndex("latitude")));
+                histori.setLongitude(csr.getString(csr.getColumnIndex("longitude")));
+                this.historis.add(histori);
+            }
+        }catch (Exception a){
+            Log.e("err", "getAllData saran: "+a);
+        }
+        return historis;
+    }
+    public ArrayList getHistoriLocation(String key){
+        historis = new ArrayList<>();
+        try {
+            database = db.getWritableDatabase();
+            String query = "SELECT * FROM histori WHERE nama_tempat LIKE '%"+key+"%' ORDER BY tanggal AND jam ASC";
             csr = database.rawQuery(query, null);
             while (csr.moveToNext()){
                 Histori histori = new Histori();
