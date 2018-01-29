@@ -44,6 +44,18 @@ public class HistoriDB {
         }
     }
 
+    public boolean deleteHistori(String id){
+        try {
+            database = db.getWritableDatabase();
+            String query = "DELETE FROM histori WHERE id_histori = "+id;
+            database.execSQL(query);
+            return true;
+        }catch (Exception e){
+            Log.e("error", "check_user delete : "+e );
+            return false;
+        }
+    }
+
     public int getCount(){
         int count = 0;
         try {
@@ -123,7 +135,7 @@ public class HistoriDB {
         return this.histori;
     }
 
-    public ArrayList getHistori(){
+    public ArrayList<Histori> getHistori(){
         historis = new ArrayList<>();
         try {
             database = db.getWritableDatabase();

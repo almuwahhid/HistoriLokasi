@@ -1,7 +1,9 @@
 package com.example.artanti.historylokasi.MyHistori;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.artanti.historylokasi.Model.Histori;
 import com.example.artanti.historylokasi.R;
@@ -58,18 +61,50 @@ public class MyHistoriActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(
                 ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
         getSupportActionBar().setTitle("Historiku");
+
+        historiDB = new HistoriDB(this);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(lm);
+        historis = new ArrayList<>();
+        myHistoriAdapter = new MyHistoriAdapter(this, historis);
+        myHistoriAdapter.setOnLongPressListener(new MyHistoriAdapter.OnLongPress() {
+            @Override
+            public void OnLongPressed(final String id) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                if(historiDB.deleteHistori(id)){
+                                    setRecyclerView();
+                                }else{
+                                    Toast.makeText(MyHistoriActivity.this, "Ada yang bermasalah", Toast.LENGTH_SHORT).show();
+                                }
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyHistoriActivity.this);
+                builder.setMessage("Apakah Anda ingin menghapus histori ini?").setPositiveButton("Ya", dialogClickListener)
+                        .setNegativeButton("Tidak", dialogClickListener).show();
+            }
+        });
+        recyclerView.setAdapter(myHistoriAdapter);
+
         setRecyclerView();
     }
 
     private void setRecyclerView(){
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(lm);
-
-        historiDB = new HistoriDB(this);
-        historis = historiDB.getHistori();
-        myHistoriAdapter = new MyHistoriAdapter(this, historis);
-        recyclerView.setAdapter(myHistoriAdapter);
+        historis.clear();
+        for (Histori histori : historiDB.getHistori()){
+            historis.add(histori);
+        }
+        myHistoriAdapter.notifyDataSetChanged();
     }
 
     @Override

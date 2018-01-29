@@ -1,6 +1,8 @@
 package com.example.artanti.historylokasi.MyHistori;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,10 +28,19 @@ import butterknife.ButterKnife;
 public class MyHistoriAdapter extends RecyclerView.Adapter<MyHistoriAdapter.ViewHolder> {
     Context context;
     ArrayList<Histori> historis;
+    OnLongPress itemLongPress;
 
     public MyHistoriAdapter(Context context, ArrayList<Histori> historis) {
         this.context = context;
         this.historis = historis;
+    }
+
+    public void setOnLongPressListener(OnLongPress onLongPress){
+        this.itemLongPress = onLongPress;
+    }
+
+    public interface OnLongPress{
+        void OnLongPressed(String id);
     }
 
     @Override
@@ -72,6 +83,15 @@ public class MyHistoriAdapter extends RecyclerView.Adapter<MyHistoriAdapter.View
                 Intent intent = new Intent(context, DetailHistori.class);
                 intent.putExtra("id_histori", histori.getId_histori());
                 context.startActivity(intent);
+            }
+        });
+
+        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                itemLongPress.OnLongPressed(String.valueOf(histori.getId_histori()));
+
+                return true;
             }
         });
     }
