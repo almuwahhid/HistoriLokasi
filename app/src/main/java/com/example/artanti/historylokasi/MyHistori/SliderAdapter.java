@@ -15,7 +15,11 @@ import android.widget.ImageView;
 import com.example.artanti.historylokasi.Model.Foto;
 import com.example.artanti.historylokasi.R;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -69,6 +73,21 @@ public class SliderAdapter extends PagerAdapter {
         }else{
             Log.d("asd", "onBindViewHolder: nothing");
         }
+        /*if(imgFile.exists()){
+            try {
+                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                int size = 3;
+                ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 10, out);
+                out.flush();
+                out.close();
+                imageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            Log.d("asd", "onBindViewHolder: nothing");
+        }*/
 //        Log.d("ngetes", "instantiateItem: "+sliders.get(position).getUrl());
         /*Picasso.with(context)
                 .load(sliders.get(position).getUrl())

@@ -16,7 +16,9 @@ import android.widget.ImageView;
 import com.example.artanti.historylokasi.R;
 import com.example.artanti.historylokasi.Utility.FilePath;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,6 +56,23 @@ public class FotoAdapter extends RecyclerView.Adapter<FotoAdapter.ViewHolder> {
         }else{
             Log.d("asd", "onBindViewHolder: nothing");
         }
+        /*if(imgFile.exists()){
+            try {
+                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                int size = 3;
+                ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 60, out);
+                out.flush();
+                out.close();
+                holder.img.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+        }else{
+            Log.d("asd", "onBindViewHolder: nothing");
+        }*/
     }
 
 
