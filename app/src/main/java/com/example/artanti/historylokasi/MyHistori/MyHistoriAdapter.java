@@ -50,7 +50,8 @@ public class MyHistoriAdapter extends RecyclerView.Adapter<MyHistoriAdapter.View
 
     private String getDate(String date){
         String year = date.split("-")[0];
-        String tgl = date.split("-")[2].substring(0, 2);
+//        String tgl = date.split("-")[2].substring(0, 2);
+        String tgl = date.split("-")[2];
         Log.d("asd", "setDate: "+date.split("-")[1]);
         String month = StringUtils.getShortMonthName(Integer.valueOf(date.split("-")[1]));
         return tgl+" "+month;
