@@ -39,7 +39,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,6 +49,10 @@
         </activity>
         <activity android:name=".Histori.HistoriActivity" />
         <activity android:name=".MyHistori.MyHistoriActivity" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -67,8 +71,6 @@
         <activity
             android:name=".DetailHistori"
             android:label="Detail Histori" />
-        <activity android:name=".MyHistori.MyHistoriAdapter" />
-        <activity android:name=".Histori.FotoAdapter"></activity>
     </application>
 
 </manifest>

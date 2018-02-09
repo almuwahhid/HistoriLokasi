@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -17,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,12 +43,15 @@ import com.example.artanti.historylokasi.Utility.DBUtil.FotoDB;
 import com.example.artanti.historylokasi.Utility.DBUtil.HistoriDB;
 import com.example.artanti.historylokasi.Utility.FilePath;
 import com.example.artanti.historylokasi.Utility.StringUtils;
+import com.example.artanti.historylokasi.lib.easyphotopicker.DefaultCallback;
+import com.example.artanti.historylokasi.lib.easyphotopicker.EasyImage;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,6 +89,49 @@ public class HistoriActivity extends AppCompatActivity implements View.OnClickLi
 
     List<Uri> uris;
     FotoAdapter fotoAdapter;
+    Uri mDestinationUri, mImageCaptureUri;
+
+    private UCrop basisConfig(@NonNull UCrop uCrop) {
+        //uCrop = uCrop.withAspectRatio(16, 9);
+        uCrop = uCrop.withAspectRatio(3, 2);
+        return uCrop;
+    }
+
+    private void startCropActivity(@NonNull Uri uri) {
+        Log.d(".asd", "startCropActivity: startCrop");
+        Uri selectedFileUri = Uri.parse(mCurrentPhotoPath);
+        UCrop uCrop = UCrop.of(uri, selectedFileUri);
+        uCrop = basisConfig(uCrop);
+        uCrop = advancedConfig(uCrop);
+        uCrop.start(this);
+    }
+
+    private UCrop advancedConfig(@NonNull UCrop uCrop) {
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
+        options.setCompressionQuality(20);
+        options.setToolbarColor(ContextCompat.getColor(this, R.color.primary));
+        //options.setFreeStyleCropEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            options.setStatusBarColor(ContextCompat.getColor(this, R.color.primary_dark));
+        }
+        return uCrop.withOptions(options);
+    }
+
+    private void handleCropResult(@NonNull Intent result) {
+        final Uri resultUri = UCrop.getOutput(result);
+
+    }
+
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+    private void handleCropError(@NonNull Intent result) {
+        final Throwable cropError = UCrop.getError(result);
+        if (cropError != null) {
+            Toast.makeText(this, cropError.getMessage(), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error not found", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,14 +299,22 @@ public class HistoriActivity extends AppCompatActivity implements View.OnClickLi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("asd", "onActivityResult: "+resultCode);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Log.d("asd", "onActivityResult: "+data.getData().toString());
-            Uri selectedFileUri = Uri.parse(mCurrentPhotoPath);
-            Log.d("asd", "onActivityResult: "+selectedFileUri.getPath());
-            uris.add(selectedFileUri);
-            fotoAdapter.notifyDataSetChanged();
-        }
+        if (resultCode == RESULT_OK) {
+            if(requestCode == UCrop.REQUEST_CROP){
+                Uri selectedFileUri = Uri.parse(mCurrentPhotoPath);
+                Log.d("asd", "onActivityResult: "+selectedFileUri.getPath());
+                uris.add(selectedFileUri);
+                fotoAdapter.notifyDataSetChanged();
+            }else{
+                Uri selectedFileUri = Uri.parse(mCurrentPhotoPath);
+                startCropActivity(selectedFileUri);
+            }
+        }else {
+            if (resultCode == UCrop.RESULT_ERROR) {
+                handleCropError(data);
+            }
 
+        }
     }
 
     private boolean validateData(){
